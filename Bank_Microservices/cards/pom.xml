@@ -11,6 +11,7 @@
 	<groupId>com.learning</groupId>
 	<artifactId>cards</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+	<packaging>jar</packaging>
 	<name>cards</name>
 	<description>Bank microservices</description>
 	<url/>
@@ -27,7 +28,7 @@
 		<url/>
 	</scm>
 	<properties>
-		<java.version>17</java.version>
+		<java.version>21</java.version>
 		<lombok.version>1.18.32</lombok.version>
 	</properties>
 	<dependencies>
@@ -91,6 +92,17 @@
 							<version>${lombok.version}</version>
 						</path>
 					</annotationProcessorPaths>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>com.google.cloud.tools</groupId>
+				<artifactId>jib-maven-plugin</artifactId>
+				<version>3.4.2</version>
+				<configuration>
+					<to>
+						<image>sriramappana1998/${project.artifactId}:m1</image>
+					<!--	to comple this request mvn compile jib:dockerbuild-->
+					</to>
 				</configuration>
 			</plugin>
 		</plugins>
