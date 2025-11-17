@@ -1,6 +1,7 @@
 package com.learning.cards.controller;
 
 import com.learning.cards.constants.CardsConstants;
+import com.learning.cards.dto.CardsContactInfoDto;
 import com.learning.cards.dto.CardsDto;
 import com.learning.cards.dto.ErrorResponseDto;
 import com.learning.cards.dto.ResponseDto;
@@ -14,11 +15,17 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author Eazy Bytes
@@ -30,11 +37,23 @@ import org.springframework.web.bind.annotation.*;
 )
 @RestController
 @RequestMapping(path = "/v1.0/cards", produces = {MediaType.APPLICATION_JSON_VALUE})
-@AllArgsConstructor
+//Removed all constructor to use @value
 @Validated
 public class CardsController {
-
     private CardsService cardsService;
+
+    public CardsController(CardsService cardsService) {
+        this.cardsService = cardsService;
+    }
+
+    @Value("${build.version}")
+    private String buildVersion;
+
+    @Autowired
+    private Environment environment;
+
+    @Autowired
+    private CardsContactInfoDto cardsContactInfoDto;
 
     @Operation(
             summary = "Create Card REST API",
@@ -56,7 +75,7 @@ public class CardsController {
     )
     @PostMapping("/createCard")
     public ResponseEntity<ResponseDto> createCard(@Valid @RequestParam
-                                                  @Pattern(regexp="(^$|[0-9]{10})",message = "Mobile number must be 10 digits")
+                                                  @Pattern(regexp = "(^$|[0-9]{10})", message = "Mobile number must be 10 digits")
                                                   String mobileNumber) {
         cardsService.createCard(mobileNumber);
         return ResponseEntity
@@ -83,7 +102,7 @@ public class CardsController {
     })
     @GetMapping("/fetchCardDetails")
     public ResponseEntity<CardsDto> fetchCardDetails(@RequestParam
-                                                     @Pattern(regexp="(^$|[0-9]{10})",message = "Mobile number must be 10 digits")
+                                                     @Pattern(regexp = "(^$|[0-9]{10})", message = "Mobile number must be 10 digits")
                                                      String mobileNumber) {
         CardsDto cardsDto = cardsService.fetchCard(mobileNumber);
         return ResponseEntity.status(HttpStatus.OK).body(cardsDto);
@@ -113,11 +132,11 @@ public class CardsController {
     @PutMapping("/updateCardDetails")
     public ResponseEntity<ResponseDto> updateCardDetails(@Valid @RequestBody CardsDto cardsDto) {
         boolean isUpdated = cardsService.updateCard(cardsDto);
-        if(isUpdated) {
+        if (isUpdated) {
             return ResponseEntity
                     .status(HttpStatus.OK)
                     .body(new ResponseDto(CardsConstants.STATUS_200, CardsConstants.MESSAGE_200));
-        }else{
+        } else {
             return ResponseEntity
                     .status(HttpStatus.EXPECTATION_FAILED)
                     .body(new ResponseDto(CardsConstants.STATUS_417, CardsConstants.MESSAGE_417_UPDATE));
@@ -147,18 +166,104 @@ public class CardsController {
     })
     @DeleteMapping("/deleteCardDetails")
     public ResponseEntity<ResponseDto> deleteCardDetails(@RequestParam
-                                                         @Pattern(regexp="(^$|[0-9]{10})",message = "Mobile number must be 10 digits")
+                                                         @Pattern(regexp = "(^$|[0-9]{10})", message = "Mobile number must be 10 digits")
                                                          String mobileNumber) {
         boolean isDeleted = cardsService.deleteCard(mobileNumber);
-        if(isDeleted) {
+        if (isDeleted) {
             return ResponseEntity
                     .status(HttpStatus.OK)
                     .body(new ResponseDto(CardsConstants.STATUS_200, CardsConstants.MESSAGE_200));
-        }else{
+        } else {
             return ResponseEntity
                     .status(HttpStatus.EXPECTATION_FAILED)
                     .body(new ResponseDto(CardsConstants.STATUS_417, CardsConstants.MESSAGE_417_DELETE));
         }
     }
+
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "HTTP Status OK"
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "HTTP Status Internal Server Error",
+                    content = @Content(
+                            schema = @Schema(implementation = ErrorResponseDto.class)
+                    )
+            )
+    }
+    )
+    @GetMapping("/build-info")
+    public ResponseEntity<String> getBuildInfo() {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(buildVersion);
+    }
+
+    @Operation(
+            summary = "Get Java version",
+            description = "Get Java versions details that is installed into cards microservice"
+    )
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "HTTP Status OK"
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "HTTP Status Internal Server Error",
+                    content = @Content(
+                            schema = @Schema(implementation = ErrorResponseDto.class)
+                    )
+            )
+    }
+    )
+    @GetMapping("/java-version")
+    public ResponseEntity<String> getJavaVersion() {
+        Map<String, String> javaInfo = new HashMap<>();
+        String javaHome = System.getenv("JAVA_HOME");
+        if (javaHome == null || javaHome.isEmpty()) {
+            // If JAVA_HOME is not set, try to get it from system properties
+            javaHome = System.getProperty("java.home");
+        }
+
+        // Add Java version information
+        javaInfo.put("java.version", System.getProperty("java.version"));
+        javaInfo.put("java.vendor", System.getProperty("java.vendor"));
+        javaInfo.put("java.home", javaHome);
+        javaInfo.put("java.vm.version", System.getProperty("java.vm.version"));
+        javaInfo.put("java.runtime.name", System.getProperty("java.runtime.name"));
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(environment.getProperty("JAVA_HOME"));
+    }
+
+    @Operation(
+            summary = "Get Contact Info",
+            description = "Contact Info details that can be reached out in case of any issues"
+    )
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "HTTP Status OK"
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "HTTP Status Internal Server Error",
+                    content = @Content(
+                            schema = @Schema(implementation = ErrorResponseDto.class)
+                    )
+            )
+    }
+    )
+    @GetMapping("/contact-info")
+    public ResponseEntity<CardsContactInfoDto> getContactInfo() {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(cardsContactInfoDto);
+    }
+
 
 }

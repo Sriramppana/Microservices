@@ -100,7 +100,7 @@
 				<version>3.4.2</version>
 				<configuration>
 					<to>
-						<image>sriramappana1998/${project.artifactId}:m1</image>
+						<image>sriramappana1998/${project.artifactId}:m2</image>
 					<!--	to comple this request mvn compile jib:dockerbuild-->
 					</to>
 				</configuration>

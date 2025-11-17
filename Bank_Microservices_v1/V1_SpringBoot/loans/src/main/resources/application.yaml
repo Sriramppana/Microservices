@@ -17,3 +17,16 @@ spring:
 
 server:
   port: 8090
+
+
+build:
+  version: "3.0"
+
+loans :
+  message: "Welcome to RamBank loans related local APIs "
+  contactDetails:
+    name: "Sriram Appana - Developer"
+    email: "sriramappana@Rambank.com"
+  onCallSupport:
+    - (+91) 9010444230
+    - (+91) 9966351388
