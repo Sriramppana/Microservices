@@ -1,5 +1,14 @@
 server:
   port: 9000
+
+config:
+  import:
+    - "application_qa.yml"
+    - "application_prod.yml"
+  profiles:
+    active:
+      - "qa"
+
 spring:
   application:
     name: cards
