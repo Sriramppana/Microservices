@@ -1,13 +1,24 @@
 spring:
   application:
     name: configserver
+
   profiles:
-    active: native
+    active: git  # Using Git backend (not native)
+
   cloud:
     config:
       server:
-        native:
-          search-locations: classpath:/config
+        git:
+          uri: https://github.com/Sriramppana/Microservices-config.git
+          default-label: main
+          timeout: 5000
+          clone-on-start: true   # clone repo at server startup
+          force-pull: true       # force pull and overwrite local clone with remote changes
+
+        # If you enable native profile, comment from Git force-pull and then uncomment these:
+        # native:
+        #   search-locations: "file:///C:/Users/91901/OneDrive/Documents/Config"
+        #   search-locations: classpath:/config
 
 server:
   port: 8071
