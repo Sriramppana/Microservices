@@ -3,7 +3,7 @@ spring:
     name: configserver
 
   profiles:
-    active: git  # Using Git backend (not native)
+    active: git  # Using Git backend
 
   cloud:
     config:
@@ -12,13 +12,36 @@ spring:
           uri: https://github.com/Sriramppana/Microservices-config.git
           default-label: main
           timeout: 5000
-          clone-on-start: true   # clone repo at server startup
-          force-pull: true       # force pull and overwrite local clone with remote changes
+          clone-on-start: true
+          force-pull: true
 
-        # If you enable native profile, comment from Git force-pull and then uncomment these:
-        # native:
-        #   search-locations: "file:///C:/Users/91901/OneDrive/Documents/Config"
-        #   search-locations: classpath:/config
+        # Symmetric key (dev). For production use JKS keystore (see notes below).
+        encrypt:
+          key: "45D81EC1EF61DF9AD8D3E5BB397F9"
+
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  health:
+    readiness-state:
+      enabled: true
+    liveness-state:
+      enabled: true
+  endpoint:
+    health:
+      probes:
+        enabled: true
+
+encrypt:
+  key: "45D81EC1EF61DF9AD8D3E5BB397F9"
 
 server:
   port: 8071

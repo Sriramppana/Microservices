@@ -26,9 +26,22 @@ spring:
     show-sql: true
     defer-datasource-initialization: true
 
-  config:
-    import: "optional:configserver:http://localhost:8071/"
-
   sql:
     init:
       mode: always
+
+  config:
+    import: "optional:configserver:http://localhost:8071/"
+
+  rabbitmq:
+    host:"localhost"
+    port:5672
+    username:guest
+    password:guest
+
+  # Actuator Configuration
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"

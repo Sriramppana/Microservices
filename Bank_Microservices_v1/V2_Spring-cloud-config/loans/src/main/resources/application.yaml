@@ -5,9 +5,6 @@ spring:
   application:
     name: loans
 
-  config:
-    import: optional:configserver:http://localhost:8071/
-
   profiles:
     active: "qa"
 
@@ -24,5 +21,21 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: true
+
+  config:
+    import: optional:configserver:http://localhost:8071/
+
+  rabbitmq:
+    host:"localhost"
+    port:5672
+    username:guest
+    password:guest
+
+  ## to enable all actuator endpoints
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
 
 
