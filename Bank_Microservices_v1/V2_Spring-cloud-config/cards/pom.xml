@@ -13,7 +13,7 @@
 	</parent>
 
 	<groupId>com.learning</groupId>
-	<artifactId>accounts</artifactId>
+	<artifactId>cards</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>cards</name>
@@ -68,6 +68,17 @@
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-config</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-bus-amqp</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+			<scope>runtime</scope>
+			<optional>true</optional>
 		</dependency>
 
 		<!-- H2 (runtime) -->
@@ -139,7 +150,7 @@
 				<version>${jib.plugin.version}</version>
 				<configuration>
 					<to>
-						<image>sriramappana1998/${project.artifactId}:s6</image>
+						<image>sriramappana1998/${project.artifactId}:m3</image>
 					</to>
 				</configuration>
 			</plugin>
