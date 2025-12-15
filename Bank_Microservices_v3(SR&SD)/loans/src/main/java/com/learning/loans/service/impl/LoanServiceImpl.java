@@ -21,7 +21,7 @@ public class LoanServiceImpl implements LoanService {
     private LoansRepository loansRepository;
     @Override
     public void createLoan(String mobileNumber) {
-        Optional<Loans> optionalLoans= loansRepository.findByMobileNumber(mobileNumber);
+        Optional<Loans> optionalLoans = loansRepository.findByMobileNumber(mobileNumber);
         if(optionalLoans.isPresent()){
             throw new LoanAlreadyExistsException("Loan already registered with given mobileNumber "+mobileNumber);
         }
