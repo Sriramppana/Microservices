@@ -1,0 +1,11 @@
+build:
+  version: "1.0"
+
+accounts:
+  message: "Welcome to RamBank accounts related qa APIs"
+  contactDetails:
+    name: "Sriram Appana - Product Owner"
+    email: "sriramappana@rambank.com"
+  onCallSupport:
+    - "(+91) 9010444230"
+    - "(+91) 9966351388"
