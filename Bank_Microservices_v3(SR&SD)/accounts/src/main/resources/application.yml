@@ -1,47 +1,49 @@
 server:
   port: 8080
-
 spring:
   application:
     name: "accounts"
-
   profiles:
     active: "prod"
-
   datasource:
-    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
-    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:testdb
+    driverClassName: org.h2.Driver
     username: sa
-    password: sa
-
+    password: ''
   h2:
     console:
       enabled: true
-      path: /h2-console
-
   jpa:
     database-platform: org.hibernate.dialect.H2Dialect
     hibernate:
-      ddl-auto: none
+      ddl-auto: update
     show-sql: true
-    defer-datasource-initialization: true
-
-  sql:
-    init:
-      mode: always
-
   config:
     import: "optional:configserver:http://localhost:8071/"
 
-  rabbitmq:
-    host:"localhost"
-    port:5672
-    username:guest
-    password:guest
-
-  # Actuator Configuration
 management:
   endpoints:
     web:
       exposure:
         include: "*"
+  endpoint:
+    shutdown:
+      access: unrestricted
+  info:
+    env:
+      enabled: true
+
+eureka:
+  instance:
+    preferIpAddress: true
+  client:
+    fetchRegistry: true
+    registerWithEureka: true
+    serviceUrl:
+      defaultZone: http://localhost:8070/eureka/
+
+info:
+  app:
+    name: "accounts"
+    description: "Ram Bank Accounts Application"
+    version: "1.0.0"

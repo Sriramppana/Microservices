@@ -68,11 +68,16 @@
             <artifactId>spring-cloud-starter-config</artifactId>
         </dependency>
 
-
         <dependency>
             <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-bus-amqp</artifactId>
+            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
+        </dependency>
+
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
@@ -98,7 +103,7 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
-        
+
         <!-- Actuator -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -142,7 +147,7 @@
                 <version>${jib.plugin.version}</version>
                 <configuration>
                     <to>
-                        <image>sriramappana1998/${project.artifactId}:m3</image>
+                        <image>sriramappana1998/${project.artifactId}:m4</image>
                     </to>
                 </configuration>
             </plugin>
