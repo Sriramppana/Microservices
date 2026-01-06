@@ -1,0 +1,11 @@
+build:
+  version: "3.0"
+
+cards:
+  message: "Welcome to RamBank cards related dev APIs"
+  contactDetails:
+    name: "Sriram Appana - Developer"
+    email: "sriramappana@rambank.com"
+  onCallSupport:
+    - "(+91) 9010444230"
+    - "(+91) 9966351388"
