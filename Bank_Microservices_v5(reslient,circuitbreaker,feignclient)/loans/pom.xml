@@ -152,7 +152,7 @@
                 <version>3.4.2</version>
                 <configuration>
                     <to>
-                        <image>sriramappana1998/${project.artifactId}:m5</image>
+                        <image>sriramappana1998/${project.artifactId}:m7</image>
                     </to>
                 </configuration>
             </plugin>
