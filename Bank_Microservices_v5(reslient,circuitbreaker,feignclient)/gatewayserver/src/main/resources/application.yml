@@ -1,8 +1,10 @@
 spring:
   application:
-    name: "gatewayserver"
+    name: gatewayserver
+
   config:
-    import: "optional:configserver:http://localhost:8071/"
+    import: optional:configserver:http://localhost:8071/
+
   cloud:
     gateway:
       server:
@@ -10,8 +12,16 @@ spring:
           discovery:
             locator:
               enabled: false
-              lowerCaseServiceId: true
-
+              lower-case-service-id: true
+          httpclient:
+            connect-timeout: 1000
+            response-timeout: 2s
+  data:
+    redis:
+      connect-timeout: 2s
+      host: localhost
+      port: 6379
+      timeout: 1s
 
 management:
   endpoints:
@@ -27,14 +37,21 @@ management:
 
 info:
   app:
-    name: "gatewayserver"
-    description: "Ram Bank Gateway Server Application"
-    version: "1.0.0"
+    name: gatewayserver
+    description: Ram Bank Gateway Server Application
+    version: 1.0.0
 
 logging:
   level:
-    com:
-      learning:
-        gatewayserver: DEBUG
+    com.learning.gatewayserver: DEBUG
+
+resilience4j:
+  circuitbreaker:
+    configs:
+      default:
+        slidingWindowSize: 10
+        permittedNumberOfCallsInHalfOpenState: 2
+        failureRateThreshold: 50
+        waitDurationInOpenState: 10s
 
 
